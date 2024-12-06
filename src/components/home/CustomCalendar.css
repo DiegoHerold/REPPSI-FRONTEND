@@ -1,0 +1,53 @@
+.custom-calendar {
+  border: 1px solid var(--chakra-colors-gray-300); /* Borda mais sutil */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--chakra-colors-gray-50); /* Fundo claro */
+}
+
+.custom-calendar .react-calendar__navigation button {
+  background-color: var(--chakra-colors-primary-500);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  margin: 4px;
+  padding: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-calendar .react-calendar__navigation button:hover {
+  background-color: var(--chakra-colors-primary-600); /* Tom mais escuro */
+  transform: scale(1.05); /* Efeito de crescimento */
+}
+
+.custom-calendar .react-calendar__tile {
+  background: var(--chakra-colors-gray-100);
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  padding: 10px;
+}
+
+.custom-calendar .react-calendar__tile:hover {
+  background: var(--chakra-colors-primary-500);
+  color: white;
+  transform: scale(1.05); /* Efeito de destaque */
+}
+
+.custom-calendar .react-calendar__tile--active {
+  background: var(--chakra-colors-primary-300);
+  color: white;
+  font-weight: bold;
+}
+
+.custom-calendar .react-calendar__tile--now {
+  background: var(--chakra-colors-primary-200);
+  color: var(--chakra-colors-primary-300);
+  font-weight: bold;
+  border: 1px solid var(--chakra-colors-primary-500);
+}
+
+.custom-calendar .react-calendar__tile--now:hover {
+  background: var(--chakra-colors-primary-300);
+  color: var(--chakra-colors-primary-200);
+  transform: scale(1.05);
+}
