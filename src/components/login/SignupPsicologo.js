@@ -80,6 +80,7 @@ const SignupPsicologoPage = () => {
         w="full"
         maxW="md"
         p={6}
+        mx={10}
         bg="white"
         boxShadow="lg"
         borderRadius="lg"
@@ -115,14 +116,14 @@ const SignupPsicologoPage = () => {
               onChange={(e) => setCrp(e.target.value)}
             />
           </FormControl>
-          <FormControl isRequired>
+          {/* <FormControl isRequired>
             <FormLabel>Especialidade</FormLabel>
             <Input
               placeholder="Digite sua especialidade"
               value={especialidade}
               onChange={(e) => setEspecialidade(e.target.value)}
             />
-          </FormControl>
+          </FormControl> */}
           <FormControl isRequired>
             <FormLabel>Senha</FormLabel>
             <Input

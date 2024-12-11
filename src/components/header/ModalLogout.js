@@ -30,8 +30,8 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
       duration: 3000,
       isClosable: true,
     });
-    navigate("/login");
-    return <Navigate to="/login" />;
+    navigate("/");
+    // return <Navigate to="/" />;
     
   };
   return (

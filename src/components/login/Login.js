@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import md5 from 'md5';
 import UserService from '../../Services/UserServices'
 import { validarEmail, validarSenha } from '../../Util/validadores'
 const userService = new UserService()
@@ -51,7 +52,7 @@ const Login = () => {
       },
       body: JSON.stringify({
         email: email,
-        senha: senha
+        senha:  md5(senha)
       }),
     })
       .then((response) => response.json())
@@ -100,6 +101,7 @@ const Login = () => {
       <Box
         w="full"
         maxW="md"
+        mx={10}
         p={6}
         bg="white"
         boxShadow="lg"

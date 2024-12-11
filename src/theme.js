@@ -2,28 +2,90 @@ import { extendTheme } from '@chakra-ui/react';
 
 const themes = {
   violet: {
-    primary: { 100: '#E9D8FD', 200: '#D6BCFA', 300: '#B794F4', 400: '#805AD5', 500: '#6B46C1', 600: '#87CEFA' },
-    secondary: { 100: '#FFF2F1', 200: '#A09BE7', 300: '#FF686B', 400: '#808080' },
+    primary: {
+      100: '#E9D8FD', // Lavanda Claro
+      200: '#D6BCFA',
+      300: '#B794F4', // Violeta Suave
+      400: '#805AD5', // Roxo Médio
+      500: '#6B46C1', // Roxo Escuro
+    },
+    secondary: {
+      100: '#FFF2F1', // Fundo Claro
+      200: '#FF686B', // Rosa Coral
+      300: '#808080', // Cinza Médio
+    },
+    feedback: {
+      success: '#38A169', // Sucesso
+      error: '#E53E3E', // Erro
+      info: '#3182CE', // Informação
+    },
+  },
+  purple: {
+    primary: {
+      100: '#F2E7FE', // Lavanda Suave
+      200: '#D3C4F3', // Roxo Claro
+      300: '#A78BFA', // Roxo Brilhante
+      400: '#7B61FF', // Roxo Intenso
+      500: '#5A3EA4', // Roxo Profundo
+    },
+    secondary: {
+      100: '#F3F0FF', // Fundo Roxo Suave
+      200: '#D6D1FF', // Roxo Pálido
+      300: '#A3A0FF', // Destaques
+    },
   },
   blue: {
-    primary: { 100: '#CCE7FF', 200: '#99D1FF', 300: '#66BBFF', 400: '#3399FF', 500: '#0077FF' },
-    secondary: { 100: '#E0F7FF', 200: '#99EBFF' },
+    primary: {
+      100: '#CCE7FF', // Azul Suave
+      200: '#99D1FF',
+      300: '#66BBFF',
+      400: '#3399FF',
+      500: '#0077FF', // Azul Intenso
+    },
+    secondary: {
+      100: '#E0F7FF', // Fundo Claro
+      200: '#99EBFF', // Destaques
+    },
   },
   green: {
-    primary: { 100: '#D4EDDA', 200: '#A7DAB7', 300: '#7BC794', 400: '#4EB372', 500: '#28A745' },
-    secondary: { 100: '#E8F5E9', 200: '#C8E6C9' },
+    primary: {
+      100: '#D4EDDA', // Verde Claro
+      200: '#A7DAB7',
+      300: '#7BC794',
+      400: '#4EB372',
+      500: '#28A745', // Verde Escuro
+    },
+    secondary: {
+      100: '#E8F5E9',
+      200: '#C8E6C9',
+    },
   },
   blackAndWhite: {
-    primary: { 100: '#F0F0F0', 200: '#D9D9D9', 300: '#A6A6A6', 400: '#595959', 500: '#333333', 600: '#000000' },
-    secondary: { 100: '#FFFFFF', 200: '#CCCCCC' },
-  },
-  coral: {
-    primary: { 100: '#FFDAC1', 200: '#FFBDA5', 300: '#FF9980', 400: '#FF6347', 500: '#FF4500' },
-    secondary: { 100: '#FFF5F0', 200: '#FFD6CC' },
+    primary: {
+      100: '#F0F0F0', // Branco Suave
+      200: '#D9D9D9',
+      300: '#A6A6A6',
+      400: '#595959',
+      500: '#333333', // Preto Suave
+      600: '#000000', // Preto Absoluto
+    },
+    secondary: {
+      100: '#FFFFFF', // Branco
+      200: '#CCCCCC',
+    },
   },
   gray: {
-    primary: { 100: '#F2F2F2', 200: '#E6E6E6', 300: '#CCCCCC', 400: '#B3B3B3', 500: '#808080', 600: '#666666' },
-    secondary: { 100: '#FAFAFA', 200: '#E0E0E0' },
+    primary: {
+      100: '#F7FAFC', // Cinza Claro
+      200: '#E2E8F0',
+      300: '#CBD5E0',
+      400: '#A0AEC0',
+      500: '#718096', // Cinza Escuro
+    },
+    secondary: {
+      100: '#EDF2F7', // Fundo Cinza Claro
+      200: '#E0E0E0',
+    },
   },
 };
 
@@ -38,13 +100,70 @@ export const getTheme = (selectedTheme) => {
       Button: {
         baseStyle: { fontWeight: 'bold', borderRadius: 'lg' },
         variants: {
-          solid: { bg: 'primary.400', color: 'white', _hover: { bg: 'primary.500' } },
-          outline: { borderColor: 'primary.400', color: 'primary.400', _hover: { bg: 'primary.100' } },
+          solid: {
+            bg: 'primary.400',
+            color: 'white',
+            _hover: { bg: 'primary.500' },
+          },
+          outline: {
+            borderColor: 'primary.400',
+            color: 'primary.400',
+            _hover: { bg: 'primary.100' },
+          },
         },
       },
     },
   });
 };
+
+
+// import { extendTheme } from '@chakra-ui/react';
+
+// const themes = {
+//   violet: {
+//     primary: { 100: '#E9D8FD', 200: '#D6BCFA', 300: '#B794F4', 400: '#805AD5', 500: '#6B46C1', 600: '#87CEFA' },
+//     secondary: { 100: '#FFF2F1', 200: '#A09BE7', 300: '#FF686B', 400: '#808080' },
+//   },
+//   blue: {
+//     primary: { 100: '#CCE7FF', 200: '#99D1FF', 300: '#66BBFF', 400: '#3399FF', 500: '#0077FF' },
+//     secondary: { 100: '#E0F7FF', 200: '#99EBFF' },
+//   },
+//   green: {
+//     primary: { 100: '#D4EDDA', 200: '#A7DAB7', 300: '#7BC794', 400: '#4EB372', 500: '#28A745' },
+//     secondary: { 100: '#E8F5E9', 200: '#C8E6C9' },
+//   },
+//   blackAndWhite: {
+//     primary: { 100: '#F0F0F0', 200: '#D9D9D9', 300: '#A6A6A6', 400: '#595959', 500: '#333333', 600: '#000000' },
+//     secondary: { 100: '#FFFFFF', 200: '#CCCCCC' },
+//   },
+//   coral: {
+//     primary: { 100: '#FFDAC1', 200: '#FFBDA5', 300: '#FF9980', 400: '#FF6347', 500: '#FF4500' },
+//     secondary: { 100: '#FFF5F0', 200: '#FFD6CC' },
+//   },
+//   gray: {
+//     primary: { 100: '#F2F2F2', 200: '#E6E6E6', 300: '#CCCCCC', 400: '#B3B3B3', 500: '#808080', 600: '#666666' },
+//     secondary: { 100: '#FAFAFA', 200: '#E0E0E0' },
+//   },
+// };
+
+// export const getTheme = (selectedTheme) => {
+//   return extendTheme({
+//     colors: themes[selectedTheme] || themes.violet,
+//     fonts: {
+//       heading: "'Roboto', sans-serif",
+//       body: "'Open Sans', sans-serif",
+//     },
+//     components: {
+//       Button: {
+//         baseStyle: { fontWeight: 'bold', borderRadius: 'lg' },
+//         variants: {
+//           solid: { bg: 'primary.400', color: 'white', _hover: { bg: 'primary.500' } },
+//           outline: { borderColor: 'primary.400', color: 'primary.400', _hover: { bg: 'primary.100' } },
+//         },
+//       },
+//     },
+//   });
+// };
 
 
 

@@ -27,6 +27,7 @@ function Header() {
   const { isOpen: isLogoutOpen, onOpen: onLogoutOpen, onClose: onLogoutClose } = useDisclosure(); // Para o modal de logout
   //Mudar de Paginas
   const navigate = useNavigate();
+  const nome = localStorage.getItem('nome');
 
   const Home = () => {
     navigate('/home');
@@ -77,8 +78,9 @@ function Header() {
 
           {/* Avatar e Botão de Fechar Perfil */}
           <Flex alignItems="center" cursor="pointer">
-            <Avatar name="Christian Nwamba" src="/path-to-profile-pic.jpg"  _hover={{ bg: "primary.700" }}
-            onClick={Perfil}/> 
+            <Avatar name={nome} src="/path-to-profile-pic.jpg"  _hover={{ bg: "primary.700" }}
+            onClick={Perfil}
+            backgroundColor={'primary.500'}/> 
           </Flex>
         </Flex>
 

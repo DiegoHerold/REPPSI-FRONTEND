@@ -146,7 +146,7 @@ const PsychologistDetails = ({ open, onClose, psychologist }) => {
         <ModalHeader>
           <Flex justify="space-between" align="center">
             <Text>Detalhes do Psicólogo</Text>
-            <Button
+            {/* <Button
               size="sm"
               mr={30}
               colorScheme="blue"
@@ -155,7 +155,7 @@ const PsychologistDetails = ({ open, onClose, psychologist }) => {
               variant="outline"
             >
               Ver Perfil
-            </Button>
+            </Button> */}
           </Flex>
         </ModalHeader>
         <ModalCloseButton />
@@ -171,7 +171,7 @@ const PsychologistDetails = ({ open, onClose, psychologist }) => {
                 {psychologist.nome || 'Nome Indisponível'}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                {psychologist.perfil?.descricao || 'Sem descrição disponível'}
+                {psychologist.perfil?.bio || 'Sem descrição disponível'}
               </Text>
               <HStack spacing="2" align="center">
                 <StarRating rating={psychologist.avaliacoes?.avaliacaoMedia || 0} />

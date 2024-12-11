@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import md5 from 'md5';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
 
 const SignupPage= () => {
@@ -38,7 +39,7 @@ const SignupPage= () => {
         nome: nome,
         email: email,
         papel: 'paciente',
-        senha: senha,
+        senha: md5(senha) ,
       }),
     })
       .then((response) => response.json())
@@ -78,6 +79,7 @@ const SignupPage= () => {
         w="full"
         maxW="md"
         p={6}
+        mx={10}
         bg="white"
         boxShadow="lg"
         borderRadius="lg"

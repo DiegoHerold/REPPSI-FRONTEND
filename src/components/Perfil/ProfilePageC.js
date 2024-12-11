@@ -10,13 +10,15 @@ import {
   Divider,
   Grid,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react";
 import ModalEditarPaciente from "./ModalEditarPaciente"; // Importação do modal externo
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function ProfilePage() {
   const [userData, setUserData] = useState(null); // Estado para armazenar os dados do usuário
+  const [loading, setLoading] = useState(true); // Estado de carregamento
   const [profilePicture, setProfilePicture] = useState(""); // Estado para a foto de perfil
   const [formData, setFormData] = useState({
     nome: "",
@@ -34,6 +36,7 @@ function ProfilePage() {
 
   useEffect(() => {
     // Faz a requisição para buscar a imagem de perfil e os dados do usuário
+    setLoading(true); // Inicia o carregamento
     fetch(`${BACKEND_URL}/files/profile/picture/${token}`, {
       method: "GET",
     })
@@ -62,7 +65,8 @@ function ProfilePage() {
       .catch((error) => {
         console.error("Erro ao buscar os dados do usuário:", error.message);
         setProfilePicture("https://via.placeholder.com/150"); // Imagem padrão em caso de erro
-      });
+      })
+      .finally(() => setLoading(false)); // Finaliza o carregamento
   }, [token]);
 
   const handleInputChange = (e) => {
@@ -148,8 +152,15 @@ function ProfilePage() {
       });
   };
 
-  if (!userData) {
-    return <Text>      Carregando...</Text>;
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" height="100vh" direction="column" gap={4}>
+        <Spinner size="xl" thickness="4px" speed="0.65s" emptyColor="gray.200" color="primary.400" />
+        <Text fontSize="lg" color="primary.400">
+          Carregando...
+        </Text>
+      </Flex>
+    );
   }
 
   return (
@@ -158,14 +169,14 @@ function ProfilePage() {
         <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={6}>
           <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
             <Flex direction="column" align="center">
-            <Avatar
-              src={profilePicture}
-              alt="Profile Picture"
-              boxSize={{ base: "250px", md: "450px" }} // Define um tamanho fixo
-              border="2px solid"
-              borderColor="primary.400"
-              mb={4}
-            />
+              <Avatar
+                src={profilePicture}
+                alt="Profile Picture"
+                boxSize={{ base: "250px", md: "450px" }}
+                border="2px solid"
+                borderColor="primary.400"
+                mb={4}
+              />
               <Text fontSize={{ base: "2xl", md: "3xl" }} color="primary.400" fontWeight="bold">
                 {formData.nome}
               </Text>
@@ -215,6 +226,226 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import {
+//   Box,
+//   Flex,
+//   Text,
+//   Button,
+//   Stack,
+//   Tag,
+//   Avatar,
+//   Divider,
+//   Grid,
+//   useDisclosure,
+// } from "@chakra-ui/react";
+// import ModalEditarPaciente from "./ModalEditarPaciente"; // Importação do modal externo
+
+// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+
+// function ProfilePage() {
+//   const [userData, setUserData] = useState(null); // Estado para armazenar os dados do usuário
+//   const [profilePicture, setProfilePicture] = useState(""); // Estado para a foto de perfil
+//   const [formData, setFormData] = useState({
+//     nome: "",
+//     perfil: {
+//       idade: "",
+//       localizacao: "",
+//       bio: "",
+//       preferencias: {
+//         interessesEspecialidade: [],
+//       },
+//     },
+//   }); // Estado inicializado para evitar erros
+//   const { isOpen, onOpen, onClose } = useDisclosure(); // Controle do modal
+//   const token = localStorage.getItem("authToken"); // Obtém o token do localStorage
+
+//   useEffect(() => {
+//     // Faz a requisição para buscar a imagem de perfil e os dados do usuário
+//     fetch(`${BACKEND_URL}/files/profile/picture/${token}`, {
+//       method: "GET",
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Erro ao buscar foto de perfil");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         // Configura a imagem de perfil e os dados do usuário
+//         setProfilePicture(data.perfil.foto || "https://via.placeholder.com/150");
+//         setUserData(data);
+//         setFormData({
+//           nome: data.nome || "",
+//           perfil: {
+//             idade: data.perfil?.idade || "",
+//             localizacao: data.perfil?.localizacao || "",
+//             bio: data.perfil?.bio || "",
+//             preferencias: {
+//               interessesEspecialidade: data.perfil?.preferencias?.interessesEspecialidade || [],
+//             },
+//           },
+//         });
+//       })
+//       .catch((error) => {
+//         console.error("Erro ao buscar os dados do usuário:", error.message);
+//         setProfilePicture("https://via.placeholder.com/150"); // Imagem padrão em caso de erro
+//       });
+//   }, [token]);
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (name === "nome") {
+//       setFormData((prev) => ({
+//         ...prev,
+//         [name]: value,
+//       }));
+//     } else if (["bio", "idade", "localizacao"].includes(name)) {
+//       setFormData((prev) => ({
+//         ...prev,
+//         perfil: { ...prev.perfil, [name]: value },
+//       }));
+//     }
+//   };
+
+//   const handleAddTag = (tag) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       perfil: {
+//         ...prev.perfil,
+//         preferencias: {
+//           ...prev.perfil.preferencias,
+//           interessesEspecialidade: [
+//             ...prev.perfil.preferencias.interessesEspecialidade,
+//             tag,
+//           ],
+//         },
+//       },
+//     }));
+//   };
+
+//   const handleRemoveTag = (tag) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       perfil: {
+//         ...prev.perfil,
+//         preferencias: {
+//           ...prev.perfil.preferencias,
+//           interessesEspecialidade: prev.perfil.preferencias.interessesEspecialidade.filter(
+//             (item) => item !== tag
+//           ),
+//         },
+//       },
+//     }));
+//   };
+
+//   const handleSubmit = () => {
+//     const filteredData = {
+//       nome: formData.nome,
+//       perfil: {
+//         bio: formData.perfil.bio,
+//         idade: formData.perfil.idade,
+//         localizacao: formData.perfil.localizacao,
+//         preferencias: {
+//           interessesEspecialidade: formData.perfil.preferencias.interessesEspecialidade,
+//         },
+//       },
+//     };
+
+//     fetch(`${BACKEND_URL}/atualizar?token=${token}`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(filteredData),
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Erro ao atualizar os dados do usuário");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         console.log("Perfil atualizado com sucesso:", data);
+//         setUserData(data);
+//         onClose();
+//       })
+//       .catch((error) => {
+//         console.error("Erro ao atualizar o perfil:", error.message);
+//       });
+//   };
+
+//   if (!userData) {
+//     return <Text>      Carregando...</Text>;
+//   }
+
+//   return (
+//     <>
+//       <Box maxW="80%" mx="auto" p={4}>
+//         <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={6}>
+//           <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
+//             <Flex direction="column" align="center">
+//             <Avatar
+//               src={profilePicture}
+//               alt="Profile Picture"
+//               boxSize={{ base: "250px", md: "450px" }} // Define um tamanho fixo
+//               border="2px solid"
+//               borderColor="primary.400"
+//               mb={4}
+//             />
+//               <Text fontSize={{ base: "2xl", md: "3xl" }} color="primary.400" fontWeight="bold">
+//                 {formData.nome}
+//               </Text>
+//               <Text fontSize={{ base: "md", md: "lg" }} color="primary.300" mb={4}>
+//                 {"Idade:"} {formData.perfil.idade} /{" "}
+//                 {formData.perfil.localizacao || "Localização não informada"}
+//               </Text>
+//               <Button size={{ base: "sm", md: "md" }} colorScheme="purple" onClick={onOpen}>
+//                 Editar Perfil
+//               </Button>
+//             </Flex>
+//           </Box>
+
+//           <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
+//             <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
+//               Biografia
+//             </Text>
+//             <Text fontSize={{ base: "md", md: "lg" }} color="gray.600" mb={6}>
+//               {formData.perfil.bio || "Sem biografia disponível"}
+//             </Text>
+//             <Divider my={4} borderColor="primary.300" />
+//             <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
+//               Gostos e Interesses
+//             </Text>
+//             <Stack direction="row" spacing={4} flexWrap="wrap">
+//               {formData.perfil.preferencias.interessesEspecialidade.map((interesse, index) => (
+//                 <Tag key={index} size={{ base: "md", md: "lg" }} bg="teal.500" color="white">
+//                   {interesse}
+//                 </Tag>
+//               ))}
+//             </Stack>
+//           </Box>
+//         </Grid>
+//       </Box>
+
+//       <ModalEditarPaciente
+//         isOpen={isOpen}
+//         onClose={onClose}
+//         formData={formData}
+//         handleInputChange={handleInputChange}
+//         handleAddTag={handleAddTag}
+//         handleRemoveTag={handleRemoveTag}
+//         handleSubmit={handleSubmit}
+//       />
+//     </>
+//   );
+// }
+
+// export default ProfilePage;
 
 
 

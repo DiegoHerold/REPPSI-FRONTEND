@@ -33,15 +33,32 @@ const SearchForm = ({ onSearch }) => {
   const [methodology, setMethodology] = useState('');
 
   const handleSearchClick = () => {
-    const filters = {
-      especializacao: specialization || undefined,
-      valorMin: priceRange[0],
-      valorMax: priceRange[1],
-      data: date || undefined,
-      metodologia: methodology || undefined,
-    };
+    const filters = {};
+  
+    // Adiciona especialização se selecionada
+    if (specialization) {
+      filters.especializacao = specialization;
+    }
+  
+    // Adiciona o valor de consulta somente se o usuário alterou o valor padrão
+    if (priceRange[0] !== 50 || priceRange[1] !== 200) {
+      filters.valorMin = priceRange[0];
+      filters.valorMax = priceRange[1];
+    }
+  
+    // Adiciona a data se selecionada
+    if (date) {
+      filters.data = date;
+    }
+  
+    // Adiciona metodologia se selecionada
+    if (methodology) {
+      filters.metodologia = methodology;
+    }
+  
     onSearch(filters); // Envia os filtros para o componente pai
   };
+  
 
   const handlePriceConfirm = () => {
     onClose(); // Fecha o modal após confirmação

@@ -19,7 +19,7 @@ const PesquisaFeed = ({ onSearch }) => {
   };
 
   return (
-    <Box maxWidth="600px" mx="auto" mt={8} position="relative">
+    <Box  maxW="90%" mx="auto" mt={8} position="relative">
       <Flex>
         <InputGroup size="lg" flex="1">
           {/* Campo de busca com ícone de pesquisa */}

@@ -5,16 +5,18 @@ import {
   Text,
   Grid,
   Avatar,
-  Stack,
   Tag,
   Button,
+  Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
 import Post from "./Post";
 import ModalEditarPsicologo from "./ModalEditarPsicologo";
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function ProfilePageP() {
+  const [loading, setLoading] = useState(true); // Estado de carregamento
   const [formData, setFormData] = useState({
     nome: "",
     perfil: {
@@ -32,13 +34,13 @@ function ProfilePageP() {
       endereco: "",
     },
   });
-  const [profilePicture, setProfilePicture] = useState(""); // Estado para a foto de perfil
+  const [profilePicture, setProfilePicture] = useState(""); // Foto de perfil
   const { isOpen, onOpen, onClose } = useDisclosure();
   const token = localStorage.getItem("authToken");
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     // Faz a requisição para buscar a foto de perfil e dados do usuário
+    setLoading(true); // Inicia o carregamento
     fetch(`${BACKEND_URL}/files/profile/picture/${token}`, {
       method: "GET",
     })
@@ -49,7 +51,7 @@ function ProfilePageP() {
         return response.json();
       })
       .then((data) => {
-        setProfilePicture(data.perfil?.foto || "https://via.placeholder.com/150"); // Configura a foto ou padrão
+        setProfilePicture(data.perfil?.foto || "https://via.placeholder.com/150"); // Foto padrão
         setFormData({
           nome: data.nome || "",
           perfil: {
@@ -71,7 +73,8 @@ function ProfilePageP() {
       .catch((error) => {
         console.error("Erro ao carregar os dados:", error.message);
         setProfilePicture("https://via.placeholder.com/150"); // Imagem padrão em caso de erro
-      });
+      })
+      .finally(() => setLoading(false)); // Finaliza o carregamento
   }, [token]);
 
   const handleInputChange = (e) => {
@@ -124,16 +127,39 @@ function ProfilePageP() {
       .catch((error) => console.error("Erro ao atualizar o perfil:", error.message));
   };
 
+  if (loading) {
+    return (
+      <Flex
+        justify="center"
+        align="center"
+        height="100vh"
+        direction="column"
+        gap={4}
+      >
+        <Spinner
+          size="xl"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="primary.400"
+        />
+        <Text fontSize="lg" color="primary.400">
+          Carregando...
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
     <Box maxW="80%" mx="auto" p={4}>
       <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={6}>
-        {/* Box de Informações Básicas */}
+        {/* Informações Básicas */}
         <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
           <Flex direction="column" align="center">
             <Avatar
-              src={profilePicture} // Foto de perfil
+              src={profilePicture}
               alt="Profile Picture"
-              boxSize={{ base: "250px", md: "450px" }} // Define um tamanho fixo
+              boxSize={{ base: "250px", md: "450px" }}
               border="2px solid"
               borderColor="primary.400"
               mb={4}
@@ -154,29 +180,28 @@ function ProfilePageP() {
                 (4.0)
               </Text>
             </Flex>
-            <Stack direction="row" spacing={4} mb={4}>
+            {/* Tags de Especialidades */}
+            <Flex wrap="wrap" gap={2} justifyContent="center" mb={4}>
               {formData.perfil.especialidades.map((spec, index) => (
                 <Tag key={index} size="md" variant="solid" bg="primary.400" color="white">
                   {spec}
                 </Tag>
               ))}
-            </Stack>
+            </Flex>
             <Button size={{ base: "sm", md: "md" }} variant="solid" onClick={onOpen}>
               Editar Perfil
             </Button>
           </Flex>
         </Box>
 
+        {/* Apresentação */}
         <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
-          {/* Apresentação */}
           <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
             Apresentação
           </Text>
           <Text fontSize={{ base: "md", md: "lg" }} color="gray.600" mb={6}>
             {formData.perfil.descricao || "Sem descrição disponível."}
           </Text>
-
-          {/* Valor da Consulta */}
           <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
             Valor da Consulta
           </Text>
@@ -200,6 +225,210 @@ function ProfilePageP() {
 }
 
 export default ProfilePageP;
+
+
+// import React, { useEffect, useState } from "react";
+// import {
+//   Box,
+//   Flex,
+//   Text,
+//   Grid,
+//   Avatar,
+//   Stack,
+//   Tag,
+//   Button,
+//   useDisclosure,
+// } from "@chakra-ui/react";
+// import Post from "./Post";
+// import ModalEditarPsicologo from "./ModalEditarPsicologo";
+// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+
+// function ProfilePageP() {
+//   const [formData, setFormData] = useState({
+//     nome: "",
+//     perfil: {
+//       especialidades: [],
+//       valorConsulta: "",
+//       metodologia: "",
+//       datasDisponiveis: [],
+//       descricao: "",
+//       localizacao: "",
+//       foto: "",
+//     },
+//     informacoesContato: {
+//       telefone: "",
+//       email: "",
+//       endereco: "",
+//     },
+//   });
+//   const [profilePicture, setProfilePicture] = useState(""); // Estado para a foto de perfil
+//   const { isOpen, onOpen, onClose } = useDisclosure();
+//   const token = localStorage.getItem("authToken");
+//   const role = localStorage.getItem("role");
+
+//   useEffect(() => {
+//     // Faz a requisição para buscar a foto de perfil e dados do usuário
+//     fetch(`${BACKEND_URL}/files/profile/picture/${token}`, {
+//       method: "GET",
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Erro ao buscar foto de perfil");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         setProfilePicture(data.perfil?.foto || "https://via.placeholder.com/150"); // Configura a foto ou padrão
+//         setFormData({
+//           nome: data.nome || "",
+//           perfil: {
+//             especialidades: data.perfil?.especialidades || [],
+//             valorConsulta: data.perfil?.valorConsulta || "",
+//             metodologia: data.perfil?.metodologia || "",
+//             datasDisponiveis: data.perfil?.datasDisponiveis || [],
+//             descricao: data.perfil?.bio || "",
+//             localizacao: data.perfil?.localizacao || "",
+//             foto: data.perfil?.foto || "",
+//           },
+//           informacoesContato: {
+//             telefone: data.informacoesContato?.telefone || "",
+//             email: data.informacoesContato?.email || "",
+//             endereco: data.informacoesContato?.endereco || "",
+//           },
+//         });
+//       })
+//       .catch((error) => {
+//         console.error("Erro ao carregar os dados:", error.message);
+//         setProfilePicture("https://via.placeholder.com/150"); // Imagem padrão em caso de erro
+//       });
+//   }, [token]);
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (name in formData) {
+//       setFormData((prev) => ({
+//         ...prev,
+//         [name]: value,
+//       }));
+//     } else {
+//       setFormData((prev) => ({
+//         ...prev,
+//         perfil: {
+//           ...prev.perfil,
+//           [name]: value,
+//         },
+//       }));
+//     }
+//   };
+
+//   const handleSubmit = () => {
+//     const filteredData = {
+//       nome: formData.nome,
+//       perfil: formData.perfil,
+//       informacoesContato: formData.informacoesContato,
+//     };
+
+//     fetch(`${BACKEND_URL}/atualizar?token=${token}`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(filteredData),
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Erro ao atualizar os dados do usuário");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         console.log("Perfil atualizado com sucesso:", data);
+//         setFormData((prev) => ({
+//           ...prev,
+//           ...data,
+//         }));
+//         onClose();
+//       })
+//       .catch((error) => console.error("Erro ao atualizar o perfil:", error.message));
+//   };
+
+//   return (
+//     <Box maxW="80%" mx="auto" p={4}>
+//       <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={6}>
+//         {/* Box de Informações Básicas */}
+//         <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
+//           <Flex direction="column" align="center">
+//             <Avatar
+//               src={profilePicture} // Foto de perfil
+//               alt="Profile Picture"
+//               boxSize={{ base: "250px", md: "450px" }} // Define um tamanho fixo
+//               border="2px solid"
+//               borderColor="primary.400"
+//               mb={4}
+//             />
+//             <Text fontSize={{ base: "2xl", md: "3xl" }} color="primary.400" fontWeight="bold">
+//               {formData.nome}
+//             </Text>
+//             <Text fontSize={{ base: "md", md: "lg" }} color="primary.300" mb={4}>
+//               {formData.perfil.localizacao}
+//             </Text>
+//             <Flex align="center" mb={4}>
+//               {[...Array(5)].map((_, index) => (
+//                 <Text key={index} color={index < 4 ? "yellow.400" : "gray.300"}>
+//                   ★
+//                 </Text>
+//               ))}
+//               <Text ml={2} color="primary.400">
+//                 (4.0)
+//               </Text>
+//             </Flex>
+//             <Stack direction="row" spacing={4} mb={4}>
+//               {formData.perfil.especialidades.map((spec, index) => (
+//                 <Tag key={index} size="md" variant="solid" bg="primary.400" color="white">
+//                   {spec}
+//                 </Tag>
+//               ))}
+//             </Stack>
+//             <Button size={{ base: "sm", md: "md" }} variant="solid" onClick={onOpen}>
+//               Editar Perfil
+//             </Button>
+//           </Flex>
+//         </Box>
+
+//         <Box bg="primary.100" p={6} borderRadius="lg" boxShadow="lg">
+//           {/* Apresentação */}
+//           <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
+//             Apresentação
+//           </Text>
+//           <Text fontSize={{ base: "md", md: "lg" }} color="gray.600" mb={6}>
+//             {formData.perfil.descricao || "Sem descrição disponível."}
+//           </Text>
+
+//           {/* Valor da Consulta */}
+//           <Text fontSize={{ base: "lg", md: "xl" }} color="primary.400" fontWeight="bold" mb={2}>
+//             Valor da Consulta
+//           </Text>
+//           <Text fontSize={{ base: "md", md: "lg" }} color="gray.600">
+//             R$ {formData.perfil.valorConsulta || "N/A"},00 por sessão
+//           </Text>
+//         </Box>
+//       </Grid>
+
+//       <Post />
+
+//       <ModalEditarPsicologo
+//         isOpen={isOpen}
+//         onClose={onClose}
+//         formData={formData}
+//         handleInputChange={handleInputChange}
+//         handleSubmit={handleSubmit}
+//       />
+//     </Box>
+//   );
+// }
+
+// export default ProfilePageP;
 
 
 // import React, { useEffect, useState } from "react";

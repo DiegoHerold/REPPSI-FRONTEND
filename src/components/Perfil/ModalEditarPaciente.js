@@ -246,7 +246,7 @@ const ModalEditarPaciente = ({
             </Flex>
             {/* Botões para Adicionar Novas Especialidades */}
             <Flex wrap="wrap" gap={2}>
-              {["Terapia Cognitivo-Comportamental", "Psicologia Infantil"].map((spec, index) => (
+              {["Terapia Cognitivo-Comportamental", "Psicologia Infantil","Psicanálise","Terapia de Casal","Terapia Familiar"].map((spec, index) => (
                 <Button
                   key={index}
                   size="sm"

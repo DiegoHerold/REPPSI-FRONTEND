@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   Box,
   Text,
+  Spinner,
   Stack,
   Image,
   Textarea,
@@ -16,22 +17,19 @@ import {
 import { ChatIcon } from '@chakra-ui/icons';
 import LikeButton from '../icones/Heart'; // Importando o componente LikeButton
 
-
 const Feed = ({ searchTerm }) => {
-
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const token = localStorage.getItem('authToken');
+  const [loading, setLoading] = useState(true); // Estado para exibir o spinner inicial
   const [newComment, setNewComment] = useState('');
   const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
   // Função para carregar mais itens da API
   const fetchMoreData = () => {
-    const url =`${BACKEND_URL}/postagens/psicologos?key=${searchTerm}`
-      
+    const url = `${BACKEND_URL}/postagens/psicologos?key=${searchTerm}`;
 
     fetch(url, {
       method: 'GET',
@@ -63,6 +61,9 @@ const Feed = ({ searchTerm }) => {
       })
       .catch((error) => {
         console.error('Erro ao carregar dados', error);
+      })
+      .finally(() => {
+        setLoading(false); // Finaliza o estado de carregamento
       });
   };
 
@@ -71,6 +72,7 @@ const Feed = ({ searchTerm }) => {
     setPage(1);
     setItems([]);
     setHasMore(true);
+    setLoading(true); // Inicia o carregamento
     fetchMoreData();
   }, [searchTerm]);
 
@@ -91,66 +93,83 @@ const Feed = ({ searchTerm }) => {
 
   const handleLikeChange = (id, newLikedState) => {
     const updatedItems = items.map((post) =>
-      post._id === id ? { ...post, liked: newLikedState, likes: newLikedState ? post.likes + 1 : post.likes - 1 } : post
+      post._id === id
+        ? { ...post, liked: newLikedState, likes: newLikedState ? post.likes + 1 : post.likes - 1 }
+        : post
     );
     setItems(updatedItems);
   };
+
+  if (loading && items.length === 0) {
+    // Exibe o spinner inicial enquanto os dados estão sendo carregados
+    return (
+      <Flex justify="center" align="center" height="100vh" direction="column" gap={4}>
+        <Spinner size="xl" thickness="4px" speed="0.65s" emptyColor="gray.200" color="primary.400" />
+        <Text fontSize="lg" color="primary.400">
+          Carregando feed...
+        </Text>
+      </Flex>
+    );
+  }
 
   return (
     <InfiniteScroll
       dataLength={items.length}
       next={fetchMoreData}
       hasMore={hasMore}
-      mx={10}
-      loader={<h4 >     Carregando...</h4>}
-      endMessage={
-        <p style={{ textAlign: 'center' }}>
-          <b>Você chegou ao fim!</b>
-        </p>
+      loader={
+        <Flex justify="center" align="center" mt={4}>
+          <Spinner size="lg" thickness="4px" speed="0.65s" emptyColor="gray.200" color="primary.400" />
+        </Flex>
       }
+      endMessage={
+        <Text textAlign="center" mt={4}>
+          <b>Você chegou ao fim!</b>
+        </Text>
+      }
+      style={{ overflow: 'visible' }} // Garante que não cause scroll duplicado
     >
-      <Box maxW="90%" mx="auto" mt={10}>
+      <Box maxW="90%" mx="auto" mt={10} overflowX="hidden" minHeight="100vh">
         <SimpleGrid columns={columns} spacing={8}>
           {items.map((post) => (
             <Box key={post._id} p={6} bg="primary.100" borderRadius="lg" boxShadow="lg">
               <Text fontWeight="bold" color="primary.400">
                 {post.username}
               </Text>
-              <Text color="blackAndWhite.600" mb={4}>
-                  {post.posts.title}
-                </Text>
+              <Text color="blackAndWhite.600" mb={4} fontWeight="bold" fontSize="lg">
+                {post.posts.title}
+              </Text>
 
-                {/* Renderizar Imagem */}
-                {post.posts.imageURL && (
-                  <Image
-                    src={post.posts.imageURL}
-                    alt="Imagem da Postagem"
+              {/* Renderizar Imagem */}
+              {post.posts.imageURL && (
+                <Image
+                  src={post.posts.imageURL}
+                  alt="Imagem da Postagem"
+                  width="100%"
+                  height="auto"
+                  borderRadius="md"
+                  mt={4}
+                />
+              )}
+
+              {/* Renderizar Vídeo */}
+              {post.posts.videoURL && (
+                <Box mt={4}>
+                  <video
+                    controls
                     width="100%"
-                    height="auto"
-                    borderRadius="md"
-                    mt={4}
-                  />
-                )}
+                    height="300px"
+                    style={{ borderRadius: '8px' }}
+                  >
+                    <source src={post.posts.videoURL} type="video/mp4" />
+                    Seu navegador não suporta o elemento de vídeo.
+                  </video>
+                </Box>
+              )}
 
-                {/* Renderizar Vídeo */}
-                {post.posts.videoURL && (
-                  <Box mt={4}>
-                    <video
-                      controls
-                      width="100%"
-                      height="300px"
-                      style={{ borderRadius: '8px' }}
-                    >
-                      <source src={post.posts.videoURL} type="video/mp4" />
-                      Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                  </Box>
-                )}
-
-                <Text color="blackAndWhite.600" mb={4}>
-                  {post.posts.content}
-                </Text>
-
+              <Text color="blackAndWhite.600" mb={4} mt={4}>
+                {post.posts.content}
+              </Text>
 
               <Flex justify="space-between" align="center" mt={4}>
                 <Flex align="center">
@@ -204,4 +223,5 @@ const Feed = ({ searchTerm }) => {
     </InfiniteScroll>
   );
 };
+
 export default Feed;

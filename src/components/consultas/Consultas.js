@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   Text,
+  Spinner,
   Button,
   Stack,
   Tag,
@@ -273,35 +274,16 @@ function ConsultationsPage({ onPsychologistClick }) {
   }}
   const entrarVideochamada = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/videochamada/iniciar`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          idPsicologo: selectedConsultation.psychologistId,
-          idPaciente: selectedConsultation.userId
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Navegar para a página de videochamada com os dados necessários
-        // navigate(`/videochamada/${selectedConsultation._id}`, {
-        //   state: {
-        //     channelData: data.data
-        //   }
-        // });
+      // Obtém o 'role' do localStorage
+      const role = localStorage.getItem('role');
+  
+      // Verifica o valor do 'role' e redireciona para o link correspondente
+      if (role === 'psicologo') {
+        window.location.href = 'https://f8f5696faed6392fdace-diegos-projects-114bdde7.vercel.app/7d6effe8-1be5-4149-942d-48dd9d62fe39';
+      } else if (role === 'paciente') {
+        window.location.href = 'https://f8f5696faed6392fdace-diegos-projects-114bdde7.vercel.app/ee909987-76a9-4859-9e5a-0ad42472ef0b';
       } else {
-        toast({
-          title: 'Erro ao iniciar videochamada',
-          description: data.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true
-        });
+        throw new Error('Role não reconhecido');
       }
     } catch (error) {
       console.error('Erro ao iniciar videochamada:', error);
@@ -310,14 +292,22 @@ function ConsultationsPage({ onPsychologistClick }) {
         description: 'Não foi possível iniciar a videochamada',
         status: 'error',
         duration: 5000,
-        isClosable: true
+        isClosable: true,
       });
     }
+  
+    // Fecha o modal ou dialog, se necessário
     onVideoClose();
   };
+  
 
   if (loading) {
-    return <Text>     Carregando...</Text>;
+    return (<Flex justify="center" align="center" height="100vh" direction="column" gap={4}>
+    <Spinner size="xl" thickness="4px" speed="0.65s" emptyColor="gray.200" color="primary.400" />
+    <Text fontSize="lg" color="primary.400">
+      Carregando...
+    </Text>
+  </Flex>)
   }
 
   return (

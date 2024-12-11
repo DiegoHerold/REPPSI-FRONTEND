@@ -12,14 +12,17 @@ import PerfilPsicologo from './Pages/PerfilPsicologo';
 import SettingPage from './Pages/Configuracao';
 import Login from './Pages/Login';
 import Cadastro from './Pages/Cadastro';
-import VideoConferencia from './components/videochamada/VideoConferencia';
 import SignupPsicologoPage from './components/login/SignupPsicologo';
 import ForgotPassword from './components/login/ForgotPassword';
 import ResetPassword from './components/login/ResetPassword';
+import HomePage from './components/begin/homePage';
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<HomePage/>} />
+
+
       <Route path="/perfil" element={<Redirect />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
@@ -30,17 +33,13 @@ const AppRoutes = () => {
       <Route path="/feed" element={<PrivateRoute role={localStorage.getItem('role')}><Feed /></PrivateRoute>} />
       <Route path="/configuracao" element={<PrivateRoute role={localStorage.getItem('role')}><SettingPage /></PrivateRoute>} />
       
-      <Route 
-        path="/videochamada/:consultaId" 
-        element={
-          <PrivateRoute role={localStorage.getItem('role')}>
-            <VideoConferencia />
-          </PrivateRoute>
-        } 
-      />
+      
       <Route path="/signup-psicologo" element={<SignupPsicologoPage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+
+
+     
     </Routes>
   );
 };

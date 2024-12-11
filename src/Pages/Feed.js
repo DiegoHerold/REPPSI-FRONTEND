@@ -15,7 +15,7 @@ const Feed = () => {
   return (
     <>
       <Header />
-      <PesquisaFeed onSearch={handleSearch} />
+      <PesquisaFeed onSearch={handleSearch} mx={5}/>
       <FeedPage searchTerm={searchTerm} />
     </>
   );
