@@ -1,59 +1,40 @@
 {
-  "name": "psicologia-dashboard",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@chakra-ui/icons": "^2.2.4",
-    "@chakra-ui/react": "^2.10.4",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.1.4",
-    "@mui/material": "^6.1.7",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.3.3",
-    "dotenv": "^16.4.7",
-    "font-awesome": "^4.7.0",
-    "framer-motion": "^11.13.5",
-    "md5": "^2.3.0",
-    "react": "^18.3.1",
-    "react-calendar": "^5.1.0",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.4.0",
-    "react-infinite-scroll-component": "^6.1.0",
-    "react-router-dom": "^7.0.2",
-    "react-scripts": "5.0.1",
-    "react-scroll": "^1.9.0",
-    "serve": "^14.2.4",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "chat with node.js and mongodb",
+  "main": "node ./bin/server.js",
   "scripts": {
-    "start": "node ./server.js ",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node ./bin/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiegoHerold/Chat-API.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "Diego Herold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiegoHerold/Chat-API/issues"
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "eslint": "^8.57.1"
+  "homepage": "https://github.com/DiegoHerold/Chat-API#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^7.14.0",
+    "@testing-library/jest-dom": "^6.6.2",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "dotenv-safe": "^9.1.0",
+    "express": "^4.18.3",
+    "jsonwebtoken": "^9.0.2",
+    "md5": "^2.3.0",
+    "mongodb": "^6.5.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^4.2.3"
   }
 }
